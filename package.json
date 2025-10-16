@@ -6,10 +6,11 @@
     "toastify": "^2.0.1"
   },
   "devDependencies": {},
-  "scripts": {
-    "build": "npm install --prefix backend && npm install --prefix frotnend/vite-project && npm run build --prefix frotnend/vite-project",
-    "start": "npm run start --prefix backend"
-  },
+"scripts": {
+  "build": "npm install --prefix backend && npm install --prefix frotnend/vite-project && npm --prefix frotnend/vite-project run build",
+  "start": "npm --prefix backend run start"
+}
+,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/trungnguyen1221999/ToDo-List-FullStack.git"
