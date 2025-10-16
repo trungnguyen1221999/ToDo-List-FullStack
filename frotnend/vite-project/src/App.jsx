@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { getAllList, getListLimitPage } from "./api/Api";
+import { editTaskApi, getAllList, getListLimitPage } from "./api/Api";
 import styled from "styled-components";
+import EditTaskForm from "./components/EditTaskForm";
 function App() {
   const [list, setList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const limit = 9;
+  const [isEditFormOpen, setIsEditFormOpen] = useState(false);
+  const limit = 6;
   useEffect(() => {
     getAllList().then((res) => setList(res.data));
   }, []);
@@ -18,7 +20,6 @@ function App() {
     if (currentPage === 1) return;
     setCurrentPage((prev) => Math.max(prev - 1, 1));
   };
-
   return (
     <Container>
       <Title>ToDo App FullStack</Title>
@@ -31,8 +32,12 @@ function App() {
                 <Index>{(index + 1 + (currentPage - 1) * limit)}.</Index>
                 <Content>
                   <TaskTitle>{item.title}</TaskTitle>
-                  <TaskDesc>{item.description}</TaskDesc>
+                  <TaskDesc>{item.desc}</TaskDesc>
                 </Content>
+                <Actions>
+                  <EditButton onClick={() => setIsEditFormOpen(true)}>Edit</EditButton>
+                  <DeleteButton>Delete</DeleteButton>
+                </Actions>
               </ListItem>
             ))}
       </List>
@@ -49,6 +54,8 @@ function App() {
         </PageList>
         <PageButton onClick={handleNextPage}>Next</PageButton>
       </Pagination>
+      {isEditFormOpen && <EditTaskForm setIsEditFormOpen={setIsEditFormOpen} />}
+
     </Container>
   );
 }
@@ -58,8 +65,12 @@ export default App;
 /* 🎨 Styled Components */
 const Container = styled.div`
   max-width: 600px;
-  margin: 60px auto;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+
   background: #fefefe;
   border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -82,7 +93,10 @@ const List = styled.ul`
 
 const ListItem = styled.li`
   display: flex;
-  align-items: flex-start;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   padding: 14px 16px;
   margin-bottom: 10px;
   background: #f8f9fa;
@@ -154,3 +168,34 @@ const PageList = styled.div`
 `;
 
 // const PageInfo = styled.p`
+const Actions = styled.div`
+  display: flex;
+  gap: 8px;
+`;
+
+const EditButton = styled.button`
+  padding: 6px 10px;
+  background-color: #ffc107;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  color: white;
+
+  &:hover {
+    background-color: #e0a800;
+  }
+`;  
+const DeleteButton = styled.button`
+  padding: 6px 10px;
+  background-color: #dc3545;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  color: white;
+
+  &:hover {
+    background-color: #c82333;
+  }
+`;

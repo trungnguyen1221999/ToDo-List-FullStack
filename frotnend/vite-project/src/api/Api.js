@@ -18,5 +18,14 @@ const getListLimitPage = async (page, limit) => {
   }
 };
 
+const editTaskApi = async (id, data) => {
+  try {
+    const res = await http.put(`/edit/${id}`, data);
+    return res.data;
+  } catch (error) {
+    console.log("error edit task api : ", error);
+  }
 
-export { getAllList, getListLimitPage };
+}
+
+export { getAllList, getListLimitPage, editTaskApi };
