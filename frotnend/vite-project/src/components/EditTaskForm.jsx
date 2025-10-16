@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { editTaskApi, getProductById } from "../api/Api";
-
-const EditTaskForm = ({ setIsEditFormOpen ,  id} ) => {
-      const [title, setTitle] = useState("");
-      const [desc, setDesc] = useState("");
-      const [status, setStatus] = useState("active");
-    useEffect(() => {
-        getProductById(id).then((res) => {
-            setTitle(res.data.title);
-            setDesc(res.data.desc);
-            setStatus(res.data.status);
-        });
-    }, [])
+import { toast } from "sonner";
+const EditTaskForm = ({ setIsEditFormOpen, id , refresh, setRefresh}) => {
+  const [title, setTitle] = useState("");
+  const [desc, setDesc] = useState("");
+  const [status, setStatus] = useState("active");
+  useEffect(() => {
+    getProductById(id).then((res) => {
+      setTitle(res.data.title);
+      setDesc(res.data.desc);
+      setStatus(res.data.status);
+    });
+  }, [id]);
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
@@ -23,14 +23,14 @@ const EditTaskForm = ({ setIsEditFormOpen ,  id} ) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-      if (!title.trim() || !desc.trim()) return;
-      editTaskApi(id, { title, desc, status }).then((res) => {
-        setIsEditFormOpen(false);
-      });
+    if (!title.trim() || !desc.trim()) return;
+    editTaskApi(id, { title, desc, status }).then((res) => {
+      setIsEditFormOpen(false);
+      setRefresh(!refresh)
+      toast.success("Task updated successfully");
+    });
   };
 
-    
-    
   return (
     <OverLayer onClick={() => setIsEditFormOpen(false)}>
       <Styled onClick={(e) => e.stopPropagation()}>
@@ -42,8 +42,8 @@ const EditTaskForm = ({ setIsEditFormOpen ,  id} ) => {
         >
           <input
             type="text"
-                      name="title"
-                      placeholder="Update your title"
+            name="title"
+            placeholder="Update your title"
             value={title}
             onChange={handleTitleChange}
           />
@@ -53,13 +53,26 @@ const EditTaskForm = ({ setIsEditFormOpen ,  id} ) => {
             placeholder="Update your description"
             value={desc}
             onChange={handleDescChange}
-                  />
-                  <Action>
-                      <input onClick={()=> setStatus("active")} type="radio" id="active" name="status" value="active" />
-                      <label htmlFor="active">Active</label><br />
-                        <input onClick={()=> setStatus("completed")} type="radio" id="completed" name="status" value="completed" />
-                      <label htmlFor="completed">Completed</label>
-                 </Action>
+          />
+          <Action>
+            <input
+              onClick={() => setStatus("active")}
+              type="radio"
+              id="active"
+              name="status"
+              value="active"
+            />
+            <label htmlFor="active">Active</label>
+            <br />
+            <input
+              onClick={() => setStatus("completed")}
+              type="radio"
+              id="completed"
+              name="status"
+              value="completed"
+            />
+            <label htmlFor="completed">Completed</label>
+          </Action>
           <button type="submit" onClick={(e) => handleSubmit(e)}>
             Update
           </button>
@@ -71,7 +84,7 @@ const EditTaskForm = ({ setIsEditFormOpen ,  id} ) => {
 
 export default EditTaskForm;
 
-const OverLayer = styled.div`
+export const OverLayer = styled.div`
   position: fixed;
   top: 0;
   left: 0;
@@ -117,6 +130,6 @@ const Styled = styled.div`
 const Action = styled.div`
   display: flex;
   align-items: center;
-    gap: 10px;
-    font-size: 14px;
-`
+  gap: 10px;
+  font-size: 14px;
+`;

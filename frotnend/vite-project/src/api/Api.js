@@ -36,5 +36,23 @@ const getProductById = async (id) => {
     console.log("error get product by id api : ", error);
   }
 }
+const deleteListById = async (id) => {
+  try {
+    const res = await http.delete(`/delete/${id}`);
+    return res.data;
+  }
+  catch (error) { 
+    console.log("error delete task by id api : ", error);
+  }
+}
+const addNewTask = async (data)=>{
+  try {
+    const res = await http.post(`/add`, data);
+    return res.data;
+  }
+  catch (error) {
+    console.log("error add new task api : ", error);
+  }
+}
 
-export { getAllList, getListLimitPage, editTaskApi, getProductById   };
+export { getAllList, getListLimitPage, editTaskApi, getProductById, deleteListById, addNewTask };

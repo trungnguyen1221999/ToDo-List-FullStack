@@ -9,7 +9,6 @@ const taskSchema = new mongoose.Schema(
     },
     desc: {
       type: String,
-      required: true,
       trim: true,
     },
     status: {
