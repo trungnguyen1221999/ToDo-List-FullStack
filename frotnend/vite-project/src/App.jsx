@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { editTaskApi, getAllList, getListLimitPage } from "./api/Api";
+import {  getAllList } from "./api/Api";
 import styled from "styled-components";
 import EditTaskForm from "./components/EditTaskForm";
 function App() {
@@ -8,9 +8,24 @@ function App() {
   const [isEditFormOpen, setIsEditFormOpen] = useState(false);
   const limit = 6;
   const [selectedId, setSelectedId] = useState('');
+  const [activeTasksCount, setActiveTasksCount] = useState(0);
+  const [completedTasksCount, setCompletedTasksCount] = useState(0);
+  const [totalList, setTotalList] = useState([]);
   useEffect(() => {
-    getAllList().then((res) => setList(res.data));
+    getAllList().then((res) => {
+      setList(res.data);
+      console.log(res);
+      setActiveTasksCount(res.activeTasksCount);
+      setCompletedTasksCount(res.completedTasksCount);
+      setTotalList(res.data);
+    });
+
   }, [isEditFormOpen]);
+  const handleSortList = (status)=>{
+    setList (totalList.filter(item => item.status === status))
+    setCurrentPage(1);
+  }
+
   const totalPages = Math.ceil(list.length / limit);
   const handleNextPage = () => {
     if (currentPage === totalPages) return;
@@ -24,19 +39,54 @@ function App() {
   return (
     <Container>
       <Title>ToDo App FullStack</Title>
+      <div style={{ display: "flex", gap: "20px" , marginBottom: "20px" }}>
+        <button onClick={() => handleSortList("active")} style={{ color: activeTasksCount > 0 ? "green" : "white", padding: "10px" , borderRadius: "10px", backgroundColor: "white" , cursor: "pointer"}}>
+          {activeTasksCount} Active Tasks
+        </button>
+        <button onClick={() => handleSortList("completed")} style={{ color: completedTasksCount > 0 ? "black" : "white", padding: "10px", borderRadius: "10px", backgroundColor: "lightgreen", cursor: "pointer" }}>
+          {completedTasksCount} Completed Tasks
+        </button>
+      </div>
       <List>
         {list &&
           list
             .slice((currentPage - 1) * limit, currentPage * limit)
             .map((item, index) => (
-              <ListItem key={item._id}>
-                <Index>{(index + 1 + (currentPage - 1) * limit)}.</Index>
-                <Content>
+              <ListItem
+                key={item._id}
+                style={{
+                  backgroundColor:
+                    item.status === "completed" ? "lightgreen" : "white",
+                }}
+              >
+                <Index>{index + 1 + (currentPage - 1) * limit}.</Index>
+                <Content
+                  style={{
+                    textDecoration:
+                      item.status === "completed" ? "line-through" : "none",
+                  }}
+                >
                   <TaskTitle>{item.title}</TaskTitle>
                   <TaskDesc>{item.desc}</TaskDesc>
                 </Content>
+                {item.status === "completed" && (
+                  <p style={{ fontSize: "12px", color: "#333" }}>
+                    Completed Date :{" "}
+                    {item.completedDate
+                      ? new Date(item.completedDate).toLocaleDateString()
+                      : "Not completed yet"}
+                  </p>
+                )}
+          
                 <Actions>
-                  <EditButton onClick={() => {setIsEditFormOpen(true); setSelectedId(item._id);}}>Edit</EditButton>
+                  <EditButton
+                    onClick={() => {
+                      setIsEditFormOpen(true);
+                      setSelectedId(item._id);
+                    }}
+                  >
+                    Edit
+                  </EditButton>
                   <DeleteButton>Delete</DeleteButton>
                 </Actions>
               </ListItem>
@@ -48,15 +98,20 @@ function App() {
           {Array(totalPages)
             .fill()
             .map((_, i) => (
-              <PageInfo key={i} active={currentPage === i + 1} onClick={() => setCurrentPage(i + 1)}>
+              <PageInfo
+                key={i}
+                active={currentPage === i + 1}
+                onClick={() => setCurrentPage(i + 1)}
+              >
                 {i + 1}
               </PageInfo>
             ))}
         </PageList>
         <PageButton onClick={handleNextPage}>Next</PageButton>
       </Pagination>
-      {isEditFormOpen && <EditTaskForm setIsEditFormOpen={setIsEditFormOpen} id={selectedId} />}
-
+      {isEditFormOpen && (
+        <EditTaskForm setIsEditFormOpen={setIsEditFormOpen} id={selectedId} />
+      )}
     </Container>
   );
 }
@@ -65,7 +120,7 @@ export default App;
 
 /* 🎨 Styled Components */
 const Container = styled.div`
-  max-width: 600px;
+  max-width: 1000px;
   padding: 20px;
   display: flex;
   flex-direction: column;

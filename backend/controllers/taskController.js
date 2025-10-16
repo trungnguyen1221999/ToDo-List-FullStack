@@ -18,9 +18,10 @@ const addMultipleTasks = async (req, res) => {
 
 const getAllTasks = async (req, res) => {
   try {
-    const allTasks = await taskModels.find();
-    console.log(allTasks);
-    res.status(200).json({ message: "Get all tasks", data: allTasks });
+    const allTasks = await taskModels.find().sort({ createdAt: -1 });
+    const activeTasksCount = await taskModels.countDocuments({ status: "active" });
+      const completedTasksCount = await taskModels.countDocuments({ status: "completed" });
+    res.status(200).json({ message: "Get all tasks", data: allTasks, activeTasksCount, completedTasksCount });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
