@@ -1,7 +1,7 @@
 
 ````markdown
 🌐 **Live Preview:**  
-👉 [Click here to open](https://todo-list-fullstack-1-2yoi.onrender.com/)
+👉 <https://todo-list-fullstack-1-2yoi.onrender.com/>
 
 
 
