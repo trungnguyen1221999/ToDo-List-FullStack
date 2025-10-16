@@ -68,4 +68,16 @@ const deleteATask = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
-export { getAllTasks, addNewTask, editATask, deleteATask, addMultipleTasks };
+const getListLimitPage = async (req, res) =>{
+  try{
+    const {page, limit} = req.params;
+    const skip = (page - 1) * limit;
+    const tasks = await taskModels.find().skip(skip).limit(limit);
+    res.status(200).json({message: "Get tasks with pagination", data: tasks});
+  }
+  catch(error){
+    return res.status(500).json({ message: error.message });
+  }
+  
+}
+export { getAllTasks, addNewTask, editATask, deleteATask, addMultipleTasks, getListLimitPage };
