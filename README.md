@@ -14,7 +14,8 @@ I’ve built several ToDo List projects before — but they were all **frontend-
 This time, I decided to go **FullStack**, connecting a real backend and database.  
 
 It’s not a complex project, but setting up the connection between **frontend and backend** took me quite some time.  
-I’ve deployed many static websites before, but this was my **first time using a web server** for a fullstack app — and yes, I got stuck for a while 😅.
+I’ve deployed many static websites before, but this was my **first time using a web server** for a fullstack app
+— and yes, I got stuck for a while 😅.
 
 ---
 
