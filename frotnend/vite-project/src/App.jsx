@@ -7,9 +7,10 @@ function App() {
   const [currentPage, setCurrentPage] = useState(1);
   const [isEditFormOpen, setIsEditFormOpen] = useState(false);
   const limit = 6;
+  const [selectedId, setSelectedId] = useState('');
   useEffect(() => {
     getAllList().then((res) => setList(res.data));
-  }, []);
+  }, [isEditFormOpen]);
   const totalPages = Math.ceil(list.length / limit);
   const handleNextPage = () => {
     if (currentPage === totalPages) return;
@@ -35,7 +36,7 @@ function App() {
                   <TaskDesc>{item.desc}</TaskDesc>
                 </Content>
                 <Actions>
-                  <EditButton onClick={() => setIsEditFormOpen(true)}>Edit</EditButton>
+                  <EditButton onClick={() => {setIsEditFormOpen(true); setSelectedId(item._id);}}>Edit</EditButton>
                   <DeleteButton>Delete</DeleteButton>
                 </Actions>
               </ListItem>
@@ -54,7 +55,7 @@ function App() {
         </PageList>
         <PageButton onClick={handleNextPage}>Next</PageButton>
       </Pagination>
-      {isEditFormOpen && <EditTaskForm setIsEditFormOpen={setIsEditFormOpen} />}
+      {isEditFormOpen && <EditTaskForm setIsEditFormOpen={setIsEditFormOpen} id={selectedId} />}
 
     </Container>
   );
