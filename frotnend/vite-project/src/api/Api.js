@@ -27,5 +27,14 @@ const editTaskApi = async (id, data) => {
   }
 
 }
+const getProductById = async (id) => {
+  try {
+    const res = await http.get(`/${id}`);
+    return res.data;
+  }
+  catch (error) {
+    console.log("error get product by id api : ", error);
+  }
+}
 
-export { getAllList, getListLimitPage, editTaskApi };
+export { getAllList, getListLimitPage, editTaskApi, getProductById   };

@@ -1,12 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { editTaskApi } from "../api/Api";
+import { editTaskApi, getProductById } from "../api/Api";
 
 const EditTaskForm = ({ setIsEditFormOpen ,  id} ) => {
-    console.log(id)
-  const [title, setTitle] = useState("");
-    const [desc, setDesc] = useState("");
-    const [status, setStatus] = useState("active");
+      const [title, setTitle] = useState("");
+      const [desc, setDesc] = useState("");
+      const [status, setStatus] = useState("active");
+    useEffect(() => {
+        getProductById(id).then((res) => {
+            setTitle(res.data.title);
+            setDesc(res.data.desc);
+            setStatus(res.data.status);
+        });
+    }, [])
+
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
   };
@@ -18,7 +25,6 @@ const EditTaskForm = ({ setIsEditFormOpen ,  id} ) => {
     e.preventDefault();
       if (!title.trim() || !desc.trim()) return;
       editTaskApi(id, { title, desc, status }).then((res) => {
-        console.log("res edit task api : ", res);
         setIsEditFormOpen(false);
       });
   };
@@ -36,15 +42,15 @@ const EditTaskForm = ({ setIsEditFormOpen ,  id} ) => {
         >
           <input
             type="text"
-            name="title"
-            placeholder="task1"
+                      name="title"
+                      placeholder="Update your title"
             value={title}
             onChange={handleTitleChange}
           />
           <input
             type="text"
             name="desc"
-            placeholder="Description"
+            placeholder="Update your description"
             value={desc}
             onChange={handleDescChange}
                   />
@@ -86,6 +92,7 @@ const Styled = styled.div`
   background-color: white;
   z-index: 10;
   border-radius: 8px;
+  width: 80%;
   form {
     display: flex;
     flex-direction: column;
@@ -94,7 +101,6 @@ const Styled = styled.div`
     padding: 20px;
     border-radius: 8px;
     width: 100%;
-    max-width: 400px;
   }
   input {
     padding: 5px;

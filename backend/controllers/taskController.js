@@ -80,4 +80,15 @@ const getListLimitPage = async (req, res) =>{
   }
   
 }
-export { getAllTasks, addNewTask, editATask, deleteATask, addMultipleTasks, getListLimitPage };
+const getProductById = async (req, res) => {
+  try {
+    const { _id } = req.params;
+    const product = await taskModels.findById(_id);
+    if (!product) return res.status(404).json({ message: "Product not found" });
+    res.status(200).json({ message: "Get product by ID", data: product });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export { getAllTasks, addNewTask, editATask, deleteATask, addMultipleTasks, getListLimitPage, getProductById };
