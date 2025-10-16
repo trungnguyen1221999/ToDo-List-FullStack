@@ -1,0 +1,25 @@
+{
+  "name": "todo-list-fullstack",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "toastify": "^2.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "build": "npm install --prefix backend && npm install --prefix frotnend/vite-project && npm run build --prefix frotnend/vite-project",
+    "start": "npm run start --prefix backend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trungnguyen1221999/ToDo-List-FullStack.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/trungnguyen1221999/ToDo-List-FullStack/issues"
+  },
+  "homepage": "https://github.com/trungnguyen1221999/ToDo-List-FullStack#readme",
+  "description": ""
+}
