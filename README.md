@@ -1,5 +1,7 @@
 
 ````markdown
+# 📝 Fullstack ToDo List App
+
 🌐 **Live Preview:**  
 👉 [https://todo-list-fullstack-1-2yoi.onrender.com/](https://todo-list-fullstack-1-2yoi.onrender.com/)
 
@@ -33,13 +35,13 @@ I’ve deployed many static websites before, but this was my **first time using 
 - **JavaScript**
 
 ### ☁️ Deployment
-- Both frontend and backend deployed using **Render Web Service**
+- Both frontend and backend are deployed using **Render Web Service**
 
 ---
 
 ## 🔗 Frontend–Backend Connection
 
-### Backend setup (`index.js`)
+### Example backend setup (`index.js`)
 ```js
 if (process.env.NODE_ENV !== "production") {
   app.use(
@@ -53,128 +55,59 @@ if (process.env.NODE_ENV !== "production") {
 
 if (process.env.NODE_ENV === "production") {
   app.use(
-    express.static(path.join(__dirname, "../frotnend/vite-project/dist"))
+    express.static(path.join(__dirname, "../frontend/vite-project/dist"))
   );
 
   app.get(/.*/, (req, res) => {
     res.sendFile(
-      path.join(__dirname, "../frotnend/vite-project/dist/index.html")
+      path.join(__dirname, "../frontend/vite-project/dist/index.html")
     );
   });
 }
 ````
 
-### Frontend API configuration
+---
 
-```js
-const BASE_URL = import.meta.env.MODE === 'production' ? '' : 'http://localhost:5000';
+## 🚀 How to Run Locally
 
-const http = axios.create({
-  baseURL: `${BASE_URL}/task`,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
-```
+1. **Clone the repository**
 
-✅ This setup automatically connects frontend and backend depending on the environment:
+   ```bash
+   git clone <your-repo-url>
+   cd <project-folder>
+   ```
 
-* In **development** → uses `http://localhost:5000`
-* In **production** → connects directly to the deployed backend
+2. **Install dependencies**
+
+   ```bash
+   cd backend
+   npm install
+
+   cd ../frontend
+   npm install
+   ```
+
+3. **Start the backend**
+
+   ```bash
+   cd backend
+   npm start
+   ```
+
+4. **Start the frontend**
+
+   ```bash
+   cd frontend
+   npm run dev
+   ```
 
 ---
 
-## 🧩 Project Structure
+## 🧠 Key Takeaways
 
-```
-📦 ToDo-List-FullStack
-├── backend
-│   ├── DB/
-│   ├── models/
-│   ├── routes/
-│   ├── controllers/
-│   ├── index.js
-│   └── package.json
-│
-├── frotnend/
-│   └── vite-project/
-│       ├── src/
-│       ├── dist/
-│       └── package.json
-│
-├── package.json  ← (root)
-└── README.md
-```
-
----
-
-## ⚙️ Root `package.json`
-
-The root `package.json` allows you to install and run both the backend and frontend easily.
-
-```json
-{
-  "name": "todo-list-fullstack",
-  "version": "1.0.0",
-  "scripts": {
-    "build": "npm install --prefix backend && npm install --prefix frotnend/vite-project && npm --prefix frotnend/vite-project run build",
-    "start": "npm --prefix backend run start"
-  }
-}
-```
-
----
-
-## 🧠 What I Learned
-
-### 🧩 MVC Architecture
-
-**Model - View - Controller** is a software pattern that separates concerns:
-
-* **Model**: handles data and database logic (MongoDB + Mongoose)
-* **View**: represents the user interface (React frontend)
-* **Controller**: manages communication between Model and View (Express routes & controllers)
-
-This structure makes code **cleaner, easier to maintain, and scalable**.
-
-### CRUD Operations
-
-I implemented all four — **Create, Read, Update, Delete** — in both backend and frontend, learning how APIs actually work under the hood.
-
-### Filtering and State Management
-
-Learned to handle task filtering (completed, active, all) and keep UI state synced with backend data.
-
-### Fullstack Deployment
-
-Finally understood how to:
-
-* Serve the React build using Express
-* Configure routes properly for SPA (Single Page Application)
-* Use `process.env.NODE_ENV` to handle production vs. development behavior
-
----
-
-## 🎯 Main Features
-
-* ➕ Add new tasks
-* 🗑️ Delete existing tasks
-* ✏️ Edit tasks
-* ✅ Mark tasks as completed
-* 🔍 Filter tasks by status (All / Completed / Active)
-* 🧭 Responsive UI built with styled-components
-
----
-
-## 🧾 Conclusion
-
-This project might look simple, but it taught me a lot:
-
-* How frontend and backend actually connect
-* How to store and retrieve real data with MongoDB
-* How to deploy a complete fullstack app on Render
-
-It’s mainly a **backend learning project**, so the frontend is intentionally minimal 😄
+* Learned how to **connect frontend and backend** in a single project.
+* Gained experience deploying a **FullStack app** on **Render**.
+* Understood how to manage **CORS**, **environment variables**, and **API routes**.
 
 ---
 
